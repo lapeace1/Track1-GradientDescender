@@ -104,7 +104,7 @@ def report(nb):
     rec = search(r"recall=([\d.]+)", text)
     cm = search(r"confusion matrix.*?= (\[\[.*?\]\])", text)
 
-    head("HEADLINE  (5-fold out-of-fold, decision threshold 0.50)")
+    head("HEADLINE  (25 seeds x 5 folds, threshold 0.50 - untuned)")
     print(f"  PR-AUC     {pr_auc}")
     print(f"  F1         {f1}")
     print(f"  Precision  {prec}   <- when it raises an alarm, it is right this often")

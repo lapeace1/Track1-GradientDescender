@@ -8,23 +8,25 @@ Predict whether a machine fails, from 5 sensor readings and its `Type`.
 
 ## Results
 
-5-fold cross-validated, out-of-fold, decision threshold 0.50:
+Out-of-fold over 25 seeds × 5 folds (125 fits), decision threshold 0.50:
 
 | Metric | Value |
 |---|---|
-| **PR-AUC** | **0.9309** |
-| **F1** | **0.9142** |
-| Precision | 0.9957 |
+| **PR-AUC** | **0.9305** |
+| **F1** | **0.9160** |
+| Precision | 1.0000 |
 | Recall | 0.8450 |
 
 Confusion matrix over all 7,999 rows:
 
 |  | predicted OK | predicted FAIL |
 |---|---|---|
-| **actually OK** | 7727 | 1 |
+| **actually OK** | 7728 | 0 |
 | **actually FAIL** | 42 | 229 |
 
-**229 of 271 real failures caught, with 1 false alarm.**
+**229 of 271 real failures caught, with 0 false alarms.**
+
+The cut-off is the untuned default of 0.50 — it was never adjusted.
 
 ---
 
@@ -39,25 +41,38 @@ Reasoning, figures and validation: **[`Methodology_Track1.pdf`](Methodology_Trac
 
 ---
 
-## Run it
+## Run it locally
 
-**Colab** — upload the notebook and `train.csv`, then `Runtime → Run all` (~1 min).
-
-**Locally:**
+Full sequence, starting from nothing. Copy the whole block:
 
 ```bash
+git clone https://github.com/<your-username>/Track1-GradientDescenders.git
+cd Track1-GradientDescenders
 pip install -r requirements.txt
 python verify.py
 ```
 
-`verify.py` runs the notebook and **prints the results**, so you can check them without opening
-anything. It exits non-zero if a cell fails. Use `--skip-run` to re-print results already saved.
+Replace `<your-username>` with your GitHub username. On Windows, use **Command Prompt** or
+**PowerShell** — the commands are identical, just type each one on its own line.
+
+`verify.py` runs the notebook and **prints the results** (PR-AUC, F1, precision, recall, confusion
+matrix, model ranking, overfitting checks), so you can confirm them without opening anything. It
+takes about two minutes and exits non-zero if a cell fails.
+
+Once it has run once, `python verify.py --skip-run` re-prints saved results without re-running.
 
 **Score the hidden test file:**
 
 ```bash
 python predict.py test.csv submission.csv
 ```
+
+---
+
+## Run it in Colab
+
+No install needed. Upload `Track1_Machine_Failure_Prediction.ipynb` and `train.csv` to the same
+Colab folder (folder icon on the left, drag the files in), then `Runtime → Run all` (~2 min).
 
 ---
 
