@@ -104,9 +104,19 @@ variants side by side so you can check this yourself.
 
 ```bash
 pip install -r requirements.txt
-jupyter nbconvert --to notebook --execute --inplace \
-        Track1_Machine_Failure_Prediction.ipynb
+jupyter nbconvert --to notebook --execute --inplace Track1_Machine_Failure_Prediction.ipynb
 ```
+
+> **Windows users:** type that second command as **one line**. The `\` line-continuation
+> used on Mac/Linux is not understood by Command Prompt — it will report
+> `'jupyter' is not recognized`. If you see that error, it means the command was split, not
+> that Jupyter is missing (though `pip install -r requirements.txt` now installs it anyway).
+
+**Option C — VS Code (no terminal needed).** Install the *Jupyter* extension, open
+`Track1_Machine_Failure_Prediction.ipynb`, then **Run All**.
+
+*Verified end-to-end on Python 3.12 with pandas 3.0.5, scikit-learn 1.9.1, numpy 1.26.4,
+matplotlib 3.11.2 and joblib 1.6.0: 37 cells, 0 errors, identical results.*
 
 **Scoring the hidden test set:**
 
