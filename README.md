@@ -83,6 +83,7 @@ variants side by side so you can check this yourself.
 | File | Purpose |
 |---|---|
 | `Track1_Machine_Failure_Prediction.ipynb` | The full, executed notebook — EDA, features, training, validation, stress tests |
+| `verify.py` | Runs the notebook and **prints the results** so you can check them without opening anything |
 | `Methodology_Track1.pdf` | 2-page methodology summary (figures A–F) |
 | `predict.py` | Standalone inference — `python predict.py test.csv submission.csv` |
 | `model.joblib` | Trained pipeline + threshold, loaded by `predict.py` |
@@ -100,17 +101,45 @@ variants side by side so you can check this yourself.
 2. `Runtime → Run all`.
 3. Takes about one minute. All outputs, tables and figures are already saved in the file.
 
-**Option B — locally.**
+**Option B — locally (recommended, because it prints the results).**
 
 ```bash
 pip install -r requirements.txt
+python verify.py
+```
+
+That runs the whole notebook and then prints the headline numbers to your terminal, so
+you can check them without opening anything:
+
+```
+15 code cells executed (+ 22 explanation sections = 37 total), 0 errors, 3 figures
+
+HEADLINE  (5-fold out-of-fold, decision threshold 0.50)
+  PR-AUC     0.9309
+  F1         0.9142
+  Precision  0.9957   <- when it raises an alarm, it is right this often
+  Recall     0.8450   <- share of real failures it catches
+  ...
+  -> 229 of 271 real failures caught, 1 false alarm
+```
+
+It also prints the 12-model ranking, the overfitting checks and the inference checks, and
+**exits with a non-zero status if any cell failed** — so "command finished" means it worked.
+
+Once the notebook has been run once, use `python verify.py --skip-run` to just re-print the
+results from the saved file without waiting for it to run again.
+
+<details>
+<summary>Raw nbconvert command (if you prefer it)</summary>
+
+```bash
 jupyter nbconvert --to notebook --execute --inplace Track1_Machine_Failure_Prediction.ipynb
 ```
 
-> **Windows users:** type that second command as **one line**. The `\` line-continuation
-> used on Mac/Linux is not understood by Command Prompt — it will report
-> `'jupyter' is not recognized`. If you see that error, it means the command was split, not
-> that Jupyter is missing (though `pip install -r requirements.txt` now installs it anyway).
+One line, no backslash. Note this **prints nothing readable** — it writes the results into
+the `.ipynb` file, so you must open the notebook to see them. That is why `verify.py` exists.
+
+</details>
 
 **Option C — VS Code (no terminal needed).** Install the *Jupyter* extension, open
 `Track1_Machine_Failure_Prediction.ipynb`, then **Run All**.
